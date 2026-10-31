@@ -1,0 +1,66 @@
+# Adria Blue Charter — AI Lead Agent (n8n + Claude)
+
+An inbox assistant for a yacht charter company in Split, Croatia. It reads every incoming inquiry, decides whether it is a real client, classifies it, extracts the booking details, drafts a reply in the client's language and puts it in front of the sales manager in Telegram. A human approves everything that matters; clean first inquiries get an automatic reply.
+
+> Demo build. The company is fictional, all test emails use `example.*` addresses. The same workflow runs in production on Gmail; this public copy writes "sent" emails to an Outbox sheet instead.
+
+![Architecture](docs/architecture.png)
+
+## What it does
+
+1. **Intake**: Gmail (production) or a web form (demo). No-reply senders and duplicates are dropped by code.
+2. **Lead filter (Claude Haiku)**: a ~$0.0001 call decides whether the email needs the expensive analysis. Spam, SEO offers and job applications stop here. When unsure, it lets the email through.
+3. **Analysis (Claude Sonnet)**: category (`hot / warm / cold / needs_review / not_lead`), risk flags, dates, guests, boat type, skipper, license, budget, missing data, a one-line summary and a draft reply. Prices and rules come from a *Knowledge base* sheet, not from the model's memory.
+4. **Follow-ups**: if the sender already exists in the CRM, the saved lead state is passed as `<history>` and merged, so the agent does not ask again what the client already answered.
+5. **Human gate (Telegram)**: a card with the summary, flags and draft, and four buttons: ✅ Send, ✏️ Edit, ⏸ Later, ❌ Not a lead. *Edit* = reply to the card in plain words ("add that the skipper is €200/day") and Claude rewrites the draft.
+6. **Auto-reply**: a first email with category `hot`/`warm`, no risk flags and a draft is answered automatically.
+7. **CRM + logs**: every lead is upserted to Google Sheets; every model call is logged with tokens and cost.
+8. **Daily digest** at 09:00 of everything postponed or still open; an error workflow alerts in Telegram.
+
+## Design decisions
+
+- **The model has no tools.** Claude only returns JSON. Sending, writing to the CRM and booking-like actions happen in code or after a human click. A prompt injection can at worst produce a bad draft that a human sees.
+- **HTTP Request node instead of the n8n AI Agent node**: one deterministic call per email, full control of the payload, exact token accounting.
+- **Hard rules in the prompt**: never confirm availability, exact price, discounts or bookings; only "from" prices from the knowledge base.
+- **Email text is data**: wrapped in `<email>` tags, injection attempts are flagged `possible_injection` and routed to a human.
+- **Two-model cascade**: Haiku filters, Sonnet analyses. Non-leads cost ~$0.00006 instead of ~$0.015.
+
+## Test results
+
+22 test emails (`tests/test_cases.csv`): hot/warm/cold leads in English, German, Croatian, Ukrainian and Italian, bareboat without a license, group too big, budget below price, off-season, existing booking change, complaint, two prompt-injection attempts, spam, a job application, follow-ups and "book it now" pressure.
+
+The suite was run **3 times** (`tests/results_3_runs.csv`, 66 results):
+
+| Metric | Result |
+|---|---|
+| Category accuracy | **22/22 in every run** (100%, identical across runs) |
+| Risk flags accuracy | 21/22 (95%) — T16 "late Oct / early Nov" was not flagged `off_season`; category was still acceptable |
+| Spam/non-leads stopped by the Haiku filter | 3/3 |
+| Injection attempts caught | 2/2 |
+| Auto-replies sent | 7 per run, all to clean first inquiries |
+| Average cost per email | **≈ $0.014** (≈ $0.016 for a full analysis, ≈ $0.00006 for filtered spam) |
+| Cost of a full 22-email run | ≈ $0.31 |
+
+Prices used: Sonnet $2 / $10 and Haiku $0.10 / $0.50 per million input/output tokens.
+
+## Repository
+
+```
+workflow/adria_lead_agent_demo.json   n8n workflow export (93 nodes, credentials removed)
+prompts/system_prompts.md             the three prompts: filter, analysis, rewrite
+tests/test_cases.csv                  22 test emails with expected category and flags
+tests/results_3_runs.csv              results of 3 runs (category, flags, tokens, cost)
+tests/knowledge_base.csv              the company rules the agent works from
+docs/architecture.png                 architecture diagram
+```
+
+## Run it yourself
+
+1. Import `workflow/adria_lead_agent_demo.json` into n8n (Cloud or self-hosted).
+2. Create a Google Sheet with the tabs *Knowledge base, Leads, Logs, Outbox, Test cases, Eval, Eval history* (headers as in the CSV files) and replace `YOUR_GOOGLE_SHEET_ID` in the workflow.
+3. Add credentials: Anthropic API, Google Sheets OAuth2, Telegram bot. Replace `YOUR_TELEGRAM_CHAT_ID` with your own Telegram user id.
+4. Open the *Inquiry form* trigger URL and send an inquiry, or run the *Run test suite* trigger.
+
+## Stack
+
+n8n · Claude Sonnet + Claude Haiku (Anthropic API) · Telegram Bot API · Google Sheets
