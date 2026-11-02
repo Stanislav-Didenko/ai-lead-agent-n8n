@@ -46,6 +46,24 @@ Prices used: Sonnet $2 / $10 and Haiku $0.10 / $0.50 per million input/output to
 
 **What a previous version got wrong, and the fix.** In the first test round (31.10) the model wrote a correct reply to "late October or early November" but did not set the `off_season` flag, so the email was auto-answered without the off-season rule. The season check now runs in code from the extracted dates, not in the model. Rule changes (budget below the lowest price → cold, off-season → auto-reply that the manager will follow up) live in the *Knowledge base* sheet, not in code.
 
+### Round 3: 13 emails the agent had never seen
+
+The 66/66 above is on the same set the fixes were made against. To rule out fitting to the test, 13 new emails were written with expected results recorded before the run, and sent once through the live demo form (`tests/results_round3_unseen.csv`): Polish, French, Spanish, Dutch, German and English; Easter dates on the season boundary, a budget far below the price, 12 guests for one boat, bareboat without a license, an injection hidden in a German P.S., a booking cancellation, a deposit complaint, a supplier offer and a phishing email.
+
+| Metric | Result |
+|---|---|
+| Category matches expected | **12/13** |
+| Risk flags match expected | **13/13** |
+| Risky emails auto-answered | **0** |
+| Spam stopped by the Haiku filter | 2/2 |
+| Average cost per email | ≈ $0.016 |
+
+What it found:
+
+- **The one mismatch was a gap in the business rules, not in the model.** Six guests plus a skipper on a six-guest motor yacht: expected `hot`, the agent chose `needs_review`, because the knowledge base says the manager decides whether the skipper's berth counts toward capacity. Safe direction; the fix is a clearer rule.
+- **The Haiku filter failed once** (hit its 100-token output limit). The email passed through to the full analysis and was handled correctly: the filter is fail-open by design.
+- **A vague `cold` email with no flags gets no reply** ("how much is a boat?"). It is saved to the CRM and waits for the digest. This follows the current auto-reply rule; whether to auto-answer such emails is a business decision.
+
 ## Screenshots
 
 **Manager's view in Telegram.** A complaint and a hidden prompt injection both go to a human, with no draft:
@@ -93,6 +111,7 @@ workflow/adria_lead_agent_demo.json   n8n workflow export (93 nodes, credentials
 prompts/system_prompts.md             the three prompts: filter, analysis, rewrite
 tests/test_cases.csv                  22 test emails with expected category and flags
 tests/results_3_runs.csv              results of 3 runs (category, flags, tokens, cost)
+tests/results_round3_unseen.csv       13 unseen emails: expected vs actual, route, cost
 tests/knowledge_base.csv              the company rules the agent works from
 docs/agent-flow.png                   how the agent works (overview diagram)
 docs/architecture.png                 architecture diagram (detailed)
