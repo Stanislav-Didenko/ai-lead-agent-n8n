@@ -77,7 +77,7 @@ Auto-replies: dates outside the season ("the manager will contact you") and an I
 
 ![Form](docs/screenshots/07-inquiry-form.jpg)
 
-**n8n**: intake flow (form or test suite → filter → analysis) and the manager-buttons flow:
+**n8n**: intake flow (test suite or form → duplicate and known-lead checks → Haiku filter row → Sonnet analysis) and the manager-buttons flow (send, edit, later, not a lead):
 
 ![Flow A](docs/screenshots/08-n8n-flow-a-intake.jpg)
 ![Flow B](docs/screenshots/09-n8n-flow-b-buttons.jpg)
