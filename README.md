@@ -82,6 +82,10 @@ Auto-replies: dates outside the season ("the manager will contact you") and an I
 ![Flow A](docs/screenshots/08-n8n-flow-a-intake.jpg)
 ![Flow B](docs/screenshots/09-n8n-flow-b-buttons.jpg)
 
+The whole workflow: A — new inquiries, B — manager buttons, C — morning digest:
+
+![Full canvas](docs/screenshots/11-n8n-full-canvas.jpg)
+
 ## Repository
 
 ```
