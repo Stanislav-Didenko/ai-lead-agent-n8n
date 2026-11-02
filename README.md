@@ -13,7 +13,7 @@ An inbox assistant for a yacht charter company in Split, Croatia. It reads every
 3. **Analysis (Claude Sonnet)**: category (`hot / warm / cold / needs_review / not_lead`), risk flags, dates, guests, boat type, skipper, license, budget, missing data, a one-line summary and a draft reply. Prices and rules come from a *Knowledge base* sheet, not from the model's memory.
 4. **Follow-ups**: if the sender already exists in the CRM, the saved lead state is passed as `<history>` and merged, so the agent does not ask again what the client already answered.
 5. **Human gate (Telegram)**: a card with the summary, flags and draft, and four buttons: ✅ Send, ✏️ Edit, ⏸ Later, ❌ Not a lead. *Edit* = reply to the card in plain words ("add that the skipper is €200/day") and Claude rewrites the draft.
-6. **Auto-reply**: a first email with category `hot`/`warm`, no risk flags and a draft is answered automatically.
+6. **Auto-reply**: a first email is answered automatically when it is clean (`hot`/`warm`, no risk flags) or when its only flags are routine: dates outside the season ("the manager will contact you") or a budget below the lowest price (`cold`). Anything risky goes to the manager.
 7. **CRM + logs**: every lead is upserted to Google Sheets; every model call is logged with tokens and cost.
 8. **Daily digest** at 09:00 of everything postponed or still open; an error workflow alerts in Telegram.
 
@@ -27,21 +27,24 @@ An inbox assistant for a yacht charter company in Split, Croatia. It reads every
 
 ## Test results
 
-22 test emails (`tests/test_cases.csv`): hot/warm/cold leads in English, German, Croatian, Ukrainian and Italian, bareboat without a license, group too big, budget below price, off-season, existing booking change, complaint, two prompt-injection attempts, spam, a job application, follow-ups and "book it now" pressure.
+22 synthetic test emails (`tests/test_cases.csv`): hot/warm/cold leads in English, German, Croatian, Ukrainian and Italian, bareboat without a license, group too big, budget below price, off-season and season-boundary dates, existing booking change, complaint, two prompt-injection attempts, spam, a job application, follow-ups and "book it now" pressure. Expected results were defined when the test set was written.
 
 The suite was run **3 times** (`tests/results_3_runs.csv`, 66 results):
 
 | Metric | Result |
 |---|---|
-| Category accuracy | **22/22 in every run** (100%, identical across runs) |
-| Risk flags accuracy | 21/22 (95%) — T16 "late Oct / early Nov" was not flagged `off_season`; category was still acceptable |
-| Spam/non-leads stopped by the Haiku filter | 3/3 |
-| Injection attempts caught | 2/2 |
-| Auto-replies sent | 7 per run, all to clean first inquiries |
-| Average cost per email | **≈ $0.014** (≈ $0.016 for a full analysis, ≈ $0.00006 for filtered spam) |
-| Cost of a full 22-email run | ≈ $0.31 |
+| Category matches expected | **66/66** (22/22 in every run) |
+| Risk flags match expected | **66/66** |
+| Spam/non-leads stopped by the Haiku filter | 3/3 per run |
+| Injection attempts sent to a human | 2/2 per run |
+| Auto-replies | 9 per run: clean first inquiries, off-season dates, budget below the lowest price |
+| Processing time per email | ≈ 11 s average, 25 s max (test runs, sequential) |
+| Average cost per email | **≈ $0.014** (≈ $0.016 full analysis, ≈ $0.00006 for filtered spam) |
+| Cost of a full 22-email run | ≈ $0.30 |
 
-Prices used: Sonnet $2 / $10 and Haiku $0.10 / $0.50 per million input/output tokens.
+Prices used: Sonnet $2 / $10 and Haiku $0.10 / $0.50 per million input/output tokens (calculated from logged tokens).
+
+**What a previous version got wrong, and the fix.** In the first test round (31.10) the model wrote a correct reply to "late October or early November" but did not set the `off_season` flag, so the email was auto-answered without the off-season rule. The season check now runs in code from the extracted dates, not in the model. Rule changes (budget below the lowest price → cold, off-season → auto-reply that the manager will follow up) live in the *Knowledge base* sheet, not in code.
 
 ## Repository
 
