@@ -4,7 +4,7 @@ An inbox assistant for a yacht charter company in Split, Croatia. It reads every
 
 > Demo build. The company is fictional, all test emails use `example.*` addresses. The same workflow runs in production on Gmail; this public copy writes "sent" emails to an Outbox sheet instead.
 
-![Architecture](docs/architecture.png)
+![How the agent works](docs/agent-flow.png)
 
 ## What it does
 
@@ -90,7 +90,9 @@ prompts/system_prompts.md             the three prompts: filter, analysis, rewri
 tests/test_cases.csv                  22 test emails with expected category and flags
 tests/results_3_runs.csv              results of 3 runs (category, flags, tokens, cost)
 tests/knowledge_base.csv              the company rules the agent works from
-docs/architecture.png                 architecture diagram
+docs/agent-flow.png                   how the agent works (overview diagram)
+docs/architecture.png                 architecture diagram (detailed)
+docs/cover.jpg                        portfolio cover
 docs/screenshots/                     Telegram cards, CRM, Outbox, form, n8n canvas
 ```
 
