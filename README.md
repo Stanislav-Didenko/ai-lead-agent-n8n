@@ -46,6 +46,38 @@ Prices used: Sonnet $2 / $10 and Haiku $0.10 / $0.50 per million input/output to
 
 **What a previous version got wrong, and the fix.** In the first test round (31.10) the model wrote a correct reply to "late October or early November" but did not set the `off_season` flag, so the email was auto-answered without the off-season rule. The season check now runs in code from the extracted dates, not in the model. Rule changes (budget below the lowest price → cold, off-season → auto-reply that the manager will follow up) live in the *Knowledge base* sheet, not in code.
 
+## Screenshots
+
+**Manager's view in Telegram.** A complaint and a hidden prompt injection both go to a human, with no draft:
+
+![Complaint and injection](docs/screenshots/01-telegram-complaint-and-injection.jpg)
+
+A group too big for the fleet: the agent proposes two boats and waits for the manager's decision:
+
+![Group too big](docs/screenshots/02-telegram-group-too-big.jpg)
+
+Auto-replies: dates outside the season ("the manager will contact you") and an Italian inquiry answered in Italian:
+
+![Off-season auto-reply](docs/screenshots/03-telegram-off-season-auto-reply.jpg)
+![Italian auto-reply](docs/screenshots/04-telegram-italian-auto-reply.jpg)
+
+**CRM in Google Sheets**: every lead is classified and flagged automatically:
+
+![Leads](docs/screenshots/05-crm-leads.jpg)
+
+**Outbox**: replies "sent" in the demo (production sends them through Gmail):
+
+![Outbox](docs/screenshots/06-outbox.jpg)
+
+**Input**: the public inquiry form used in the demo:
+
+![Form](docs/screenshots/07-inquiry-form.jpg)
+
+**n8n**: intake flow (form or test suite → filter → analysis) and the manager-buttons flow:
+
+![Flow A](docs/screenshots/08-n8n-flow-a-intake.jpg)
+![Flow B](docs/screenshots/09-n8n-flow-b-buttons.jpg)
+
 ## Repository
 
 ```
@@ -55,6 +87,7 @@ tests/test_cases.csv                  22 test emails with expected category and 
 tests/results_3_runs.csv              results of 3 runs (category, flags, tokens, cost)
 tests/knowledge_base.csv              the company rules the agent works from
 docs/architecture.png                 architecture diagram
+docs/screenshots/                     Telegram cards, CRM, Outbox, form, n8n canvas
 ```
 
 ## Run it yourself
