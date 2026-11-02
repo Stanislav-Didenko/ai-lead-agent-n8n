@@ -61,6 +61,10 @@ Auto-replies: dates outside the season ("the manager will contact you") and an I
 ![Off-season auto-reply](docs/screenshots/03-telegram-off-season-auto-reply.jpg)
 ![Italian auto-reply](docs/screenshots/04-telegram-italian-auto-reply.jpg)
 
+**Scorecard** after 3 test runs (66 results):
+
+![Scorecard](docs/screenshots/10-scorecard.jpg)
+
 **CRM in Google Sheets**: every lead is classified and flagged automatically:
 
 ![Leads](docs/screenshots/05-crm-leads.jpg)

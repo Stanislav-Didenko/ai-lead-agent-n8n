@@ -3,8 +3,8 @@
   "nodes": [
     {
       "parameters": {
-        "content": "## Flow A: new inquiries\n**Inputs:** public n8n form (live demo) or **Run test suite** (15 scripted emails from the *Test cases* tab; clears Leads, Eval and Outbox first).\n**Gate:** senders not yet in *Leads* first go through a short Haiku check (lead or not). Confident 'no' is logged as *filter* and listed in the morning digest; 'yes' / 'unsure' / filter error go on (fail open). Known leads skip the gate.\nClaude classifies → row in *Leads* → hot/warm/needs_review get a Telegram card. Clean first emails (hot/warm, no risk flags) get an **auto-reply** (written to *Outbox*). Test runs also write a row to *Eval*.",
-        "height": 260,
+        "content": "## Flow A: new inquiries\n**Inputs:** public n8n form (live demo) or **Run test suite** (22 scripted emails from the *Test cases* tab; clears Leads, Eval and Outbox first).\n**Gate (row below):** senders not yet in *Leads* first go through a short Haiku check (lead or not). Confident 'no' is logged as *filter* and listed in the morning digest; 'yes' / 'unsure' / filter error go on (fail open). Known leads skip the gate.\n**Analysis:** Claude Sonnet classifies, Parse AI adds safety rules in code (risk flags → human, season check from the dates) → row in *Leads*. hot/warm/needs_review get a Telegram card with buttons. **Auto-reply** (written to *Outbox*) for first emails that are clean or whose only flags are off_season / budget_below_from. Test runs also write a row to *Eval*.",
+        "height": 320,
         "width": 900,
         "color": 4
       },
@@ -672,7 +672,6 @@
         4432,
         384
       ],
-      "disabled": false,
       "credentials": {
         "telegramApi": {
           "id": "",
@@ -1310,7 +1309,7 @@
       "typeVersion": 1,
       "position": [
         160,
-        1232
+        1682
       ]
     },
     {
@@ -1327,7 +1326,7 @@
       "typeVersion": 1.1,
       "position": [
         880,
-        1536
+        1986
       ],
       "credentials": {
         "telegramApi": {
@@ -1375,7 +1374,7 @@
       "typeVersion": 3.4,
       "position": [
         1104,
-        1536
+        1986
       ]
     },
     {
@@ -1388,7 +1387,7 @@
       "typeVersion": 2,
       "position": [
         1312,
-        1536
+        1986
       ]
     },
     {
@@ -1421,7 +1420,7 @@
       "typeVersion": 2.2,
       "position": [
         1536,
-        1536
+        1986
       ]
     },
     {
@@ -1454,7 +1453,7 @@
       "typeVersion": 2.2,
       "position": [
         1536,
-        2016
+        2466
       ]
     },
     {
@@ -1485,7 +1484,7 @@
       "typeVersion": 4.5,
       "position": [
         1792,
-        1280
+        1730
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -1505,7 +1504,7 @@
       "typeVersion": 2,
       "position": [
         2016,
-        1280
+        1730
       ]
     },
     {
@@ -1539,7 +1538,7 @@
       "typeVersion": 2.2,
       "position": [
         2224,
-        1280
+        1730
       ]
     },
     {
@@ -1557,7 +1556,7 @@
       "typeVersion": 1.2,
       "position": [
         2416,
-        1536
+        1986
       ],
       "credentials": {
         "telegramApi": {
@@ -1676,7 +1675,7 @@
       "typeVersion": 3.2,
       "position": [
         2448,
-        1184
+        1634
       ]
     },
     {
@@ -1710,7 +1709,7 @@
       "typeVersion": 2.2,
       "position": [
         2656,
-        960
+        1410
       ]
     },
     {
@@ -1728,7 +1727,7 @@
       "typeVersion": 1.2,
       "position": [
         3008,
-        1056
+        1506
       ],
       "credentials": {
         "telegramApi": {
@@ -1998,7 +1997,7 @@
       "typeVersion": 4.5,
       "position": [
         3104,
-        848
+        1298
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2023,7 +2022,7 @@
       "typeVersion": 1.2,
       "position": [
         3328,
-        848
+        1298
       ],
       "credentials": {
         "telegramApi": {
@@ -2047,7 +2046,7 @@
       "typeVersion": 1.2,
       "position": [
         3552,
-        848
+        1298
       ],
       "credentials": {
         "telegramApi": {
@@ -2201,7 +2200,7 @@
       "typeVersion": 4.5,
       "position": [
         4224,
-        848
+        1298
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2225,7 +2224,7 @@
       "typeVersion": 1.2,
       "position": [
         2656,
-        1136
+        1586
       ],
       "credentials": {
         "telegramApi": {
@@ -2495,7 +2494,7 @@
       "typeVersion": 4.5,
       "position": [
         2736,
-        1392
+        1842
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2519,7 +2518,7 @@
       "typeVersion": 1.2,
       "position": [
         2960,
-        1392
+        1842
       ],
       "credentials": {
         "telegramApi": {
@@ -2673,7 +2672,7 @@
       "typeVersion": 4.5,
       "position": [
         3168,
-        1392
+        1842
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2943,7 +2942,7 @@
       "typeVersion": 4.5,
       "position": [
         2640,
-        1648
+        2098
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -2968,7 +2967,7 @@
       "typeVersion": 1.2,
       "position": [
         2864,
-        1648
+        2098
       ],
       "credentials": {
         "telegramApi": {
@@ -2992,7 +2991,7 @@
       "typeVersion": 1.2,
       "position": [
         3072,
-        1648
+        2098
       ],
       "credentials": {
         "telegramApi": {
@@ -3146,7 +3145,7 @@
       "typeVersion": 4.5,
       "position": [
         3296,
-        1648
+        2098
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -3183,7 +3182,7 @@
       "typeVersion": 4.5,
       "position": [
         1760,
-        2016
+        2466
       ],
       "alwaysOutputData": true,
       "credentials": {
@@ -3203,7 +3202,7 @@
       "typeVersion": 2,
       "position": [
         1984,
-        2016
+        2466
       ]
     },
     {
@@ -3237,7 +3236,7 @@
       "typeVersion": 2.2,
       "position": [
         2192,
-        2016
+        2466
       ]
     },
     {
@@ -3254,7 +3253,7 @@
       "typeVersion": 1.2,
       "position": [
         2416,
-        2160
+        2610
       ],
       "credentials": {
         "telegramApi": {
@@ -3283,7 +3282,7 @@
       "typeVersion": 4.5,
       "position": [
         2416,
-        1936
+        2386
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -3302,7 +3301,7 @@
       "typeVersion": 2,
       "position": [
         2640,
-        1936
+        2386
       ]
     },
     {
@@ -3337,7 +3336,7 @@
       "typeVersion": 4.2,
       "position": [
         2864,
-        1936
+        2386
       ],
       "retryOnFail": true,
       "maxTries": 3,
@@ -3360,7 +3359,7 @@
       "typeVersion": 2,
       "position": [
         3072,
-        1872
+        2322
       ],
       "onError": "continueErrorOutput"
     },
@@ -3378,7 +3377,7 @@
       "typeVersion": 1.2,
       "position": [
         3296,
-        2096
+        2546
       ],
       "credentials": {
         "telegramApi": {
@@ -3648,7 +3647,7 @@
       "typeVersion": 4.5,
       "position": [
         3296,
-        1792
+        2242
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -3713,7 +3712,7 @@
       "typeVersion": 1.2,
       "position": [
         3520,
-        1792
+        2242
       ],
       "credentials": {
         "telegramApi": {
@@ -3982,7 +3981,7 @@
       "typeVersion": 4.5,
       "position": [
         3744,
-        1792
+        2242
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -4139,7 +4138,7 @@
       "typeVersion": 4.5,
       "position": [
         3952,
-        1792
+        2242
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -4161,7 +4160,7 @@
       "typeVersion": 1,
       "position": [
         704,
-        2288
+        2738
       ]
     },
     {
@@ -4181,7 +4180,7 @@
       "typeVersion": 1.2,
       "position": [
         912,
-        2544
+        2994
       ]
     },
     {
@@ -4205,7 +4204,7 @@
       "typeVersion": 3.4,
       "position": [
         1136,
-        2544
+        2994
       ]
     },
     {
@@ -4228,7 +4227,7 @@
       "typeVersion": 4.5,
       "position": [
         1344,
-        2544
+        2994
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -4247,7 +4246,7 @@
       "typeVersion": 2,
       "position": [
         1680,
-        2544
+        2994
       ]
     },
     {
@@ -4280,7 +4279,7 @@
       "typeVersion": 2.2,
       "position": [
         1840,
-        2544
+        2994
       ]
     },
     {
@@ -4339,7 +4338,7 @@
       "typeVersion": 1.2,
       "position": [
         2016,
-        2448
+        2898
       ],
       "credentials": {
         "telegramApi": {
@@ -4609,7 +4608,7 @@
       "typeVersion": 4.5,
       "position": [
         2224,
-        2448
+        2898
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -4648,7 +4647,7 @@
       "typeVersion": 2.2,
       "position": [
         2016,
-        2656
+        3106
       ]
     },
     {
@@ -4666,7 +4665,7 @@
       "typeVersion": 1.2,
       "position": [
         2224,
-        2608
+        3058
       ],
       "credentials": {
         "telegramApi": {
@@ -4935,7 +4934,7 @@
       "typeVersion": 4.5,
       "position": [
         2224,
-        2768
+        3218
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -5426,7 +5425,6 @@
         0
       ],
       "onError": "continueRegularOutput",
-      "disabled": false,
       "credentials": {
         "telegramApi": {
           "id": "",
@@ -5569,7 +5567,7 @@
       "typeVersion": 4.5,
       "position": [
         2896,
-        848
+        1298
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -6168,8 +6166,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        2832,
-        1200
+        2960,
+        960
       ]
     },
     {
@@ -6203,8 +6201,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.2,
       "position": [
-        3008,
-        1200
+        3184,
+        960
       ],
       "retryOnFail": true,
       "maxTries": 3,
@@ -6226,8 +6224,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3152,
-        1200
+        3408,
+        960
       ]
     },
     {
@@ -6260,8 +6258,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3280,
-        1200
+        3632,
+        960
       ]
     },
     {
@@ -6411,8 +6409,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3456,
-        1280
+        3856,
+        960
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -6451,8 +6449,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        3680,
-        1280
+        4080,
+        960
       ]
     },
     {
@@ -6655,8 +6653,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        3904,
-        1200
+        4304,
+        960
       ],
       "credentials": {
         "googleSheetsOAuth2Api": {
@@ -6685,7 +6683,7 @@
       "typeVersion": 4.5,
       "position": [
         1504,
-        2544
+        2994
       ],
       "executeOnce": true,
       "alwaysOutputData": true,
